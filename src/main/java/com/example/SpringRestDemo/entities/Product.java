@@ -15,7 +15,7 @@ public class Product {
     @Column(nullable = false)
     private float price;
     @Column(nullable = false)
-    private int quality;
+    private int quantity;
 
     public Long getId() {
         return id;
@@ -49,19 +49,19 @@ public class Product {
         this.price = price;
     }
 
-    public int getQuality() {
-        return quality;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setQuality(int quality) {
-        this.quality = quality;
+    public void setQuantity(int quality) {
+        this.quantity = quality;
     }
 
     public Product(String title, String description, float price, int quality) {
         this.title = title;
         this.description = description;
         this.price = price;
-        this.quality = quality;
+        this.quantity = quality;
     }
 
     public Product() {
