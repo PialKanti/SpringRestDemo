@@ -16,6 +16,8 @@ public class Product {
     private float price;
     @Column(nullable = false)
     private int quantity;
+    @OneToOne
+    private Vendor vendor;
 
     public Long getId() {
         return id;
@@ -57,11 +59,20 @@ public class Product {
         this.quantity = quality;
     }
 
-    public Product(String title, String description, float price, int quality) {
+    public Vendor getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(Vendor vendor) {
+        this.vendor = vendor;
+    }
+
+    public Product(String title, String description, float price, int quantity, Vendor vendor) {
         this.title = title;
         this.description = description;
         this.price = price;
-        this.quantity = quality;
+        this.quantity = quantity;
+        this.vendor = vendor;
     }
 
     public Product() {

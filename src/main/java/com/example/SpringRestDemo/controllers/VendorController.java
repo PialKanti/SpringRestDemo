@@ -1,7 +1,7 @@
 package com.example.SpringRestDemo.controllers;
 
-import com.example.SpringRestDemo.entities.Product;
-import com.example.SpringRestDemo.repositories.ProductRepository;
+import com.example.SpringRestDemo.entities.Vendor;
+import com.example.SpringRestDemo.repositories.VendorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,48 +12,49 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/products")
-public class ProductController {
-    private final ProductRepository repository;
+@RequestMapping(value = "/vendors")
+public class VendorController {
+    private final VendorRepository repository;
 
     @Autowired
-    public ProductController(ProductRepository repository) {
+    public VendorController(VendorRepository repository) {
         this.repository = repository;
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAll() {
+    public ResponseEntity<List<Vendor>> getAll() {
         return ResponseEntity.ok(repository.findAll());
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Product> get(@PathVariable Long id) {
-        Optional<Product> product = repository.findById(id);
-        return product.map(ResponseEntity::ok).orElse(ResponseEntity.badRequest().build());
+    public ResponseEntity<Vendor> get(@PathVariable Long id) {
+        Optional<Vendor> optionalVendor = repository.findById(id);
+        return optionalVendor.map(ResponseEntity::ok).orElse(ResponseEntity.badRequest().build());
     }
 
     @PostMapping
-    public ResponseEntity<Product> create(@RequestBody Product product) {
-        Product createdEntity = repository.save(product);
+    public ResponseEntity<Vendor> create(@RequestBody Vendor vendor) {
+        Vendor createdEntity = repository.save(vendor);
         String uriString = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(createdEntity.getId())
                 .toUriString();
 
-        return ResponseEntity.created(URI.create(uriString)).body(product);
+        return ResponseEntity.created(URI.create(uriString))
+                .body(createdEntity);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product product) {
+    public ResponseEntity<Vendor> update(@PathVariable Long id, @RequestBody Vendor vendor) {
         if (!repository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
 
-        if (!id.equals(product.getId())) {
+        if (!id.equals(vendor.getId())) {
             return ResponseEntity.badRequest().build();
         }
 
-        Product updatedEntity = repository.save(product);
+        Vendor updatedEntity = repository.save(vendor);
 
         return ResponseEntity.ok(updatedEntity);
     }
